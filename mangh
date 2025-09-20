@@ -1,0 +1,35 @@
+import random
+
+# 奖品列表及概率
+prizes = [
+    {"name": "普通奖品", "prob": 0.6},
+    {"name": "稀有奖品", "prob": 0.3},
+    {"name": "超级稀有奖品", "prob": 0.09},
+    {"name": "终极大奖", "prob": 0.01}
+]
+
+# 生成累积概率，用于随机抽奖
+def create_weighted_list(prizes):
+    weighted_list = []
+    for prize in prizes:
+        weighted_list.append((prize["name"], prize["prob"]))
+    return weighted_list
+
+def draw_prize(prizes):
+    r = random.random()
+    cumulative = 0
+    for prize in prizes:
+        cumulative += prize[1]
+        if r <= cumulative:
+            return prize[0]
+    return prizes[-1][0]  # 防止概率加和不完全为1
+
+if __name__ == "__main__":
+    weighted_prizes = create_weighted_list(prizes)
+    print("欢迎来到盲盒抽奖小游戏！")
+    times = int(input("请输入要抽的次数: "))
+    print("\n开始抽奖！\n")
+
+    for i in range(times):
+        result = draw_prize(weighted_prizes)
+        print(f"第{i+1}次抽中：{result}")
